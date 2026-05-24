@@ -37,6 +37,39 @@
             <scope>test</scope>
         </dependency>
         <!-- them/sua/xoa pom -> reload maven-->
+        <!--Hibernate-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core-jakarta</artifactId>
+            <version>5.6.10.Final</version>
+        </dependency>
+        <!-- SQL Server-->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.2.0.jre11</version>
+        </dependency>
+        <!-- Lombox => hỗ trợ gen contructor, getter, setter
+        + jdk (17-19) : giữ nguyên => 1.18.24
+        + jdk 20,21+ => 1.18.30
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--  JSTL      -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
