@@ -1,11 +1,14 @@
 package com.poly.main.B4_Hibernate.controller;
 
+import com.poly.main.B4_Hibernate.entity.Category1;
 import com.poly.main.B4_Hibernate.repository.CategoryRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
+import org.apache.commons.beanutils.BeanUtils;
 
 import java.io.IOException;
 
@@ -63,30 +66,69 @@ public class CategoryServlet extends HttpServlet {
         }
     }
 
-    private void deleteDuLieu(HttpServletRequest request, HttpServletResponse response) {
+    private void deleteDuLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // B1: Lay gia tri truyen tren duong dan => Lay gia tri jsp -> servlet
+        String id = request.getParameter("id");
+        // B2: lay doi tuong ra dua vao id
+        Category1 cate = categoryRepository.getOne(Long.valueOf(id));
+        // B3: Thuc hien chuc nang xoa
+        categoryRepository.delete(cate);
+        // B4: Quay ve trang chu => /category/hien-thi
+        response.sendRedirect("/category/hien-thi");
+//        request.setAttribute("listCate",categoryRepository.getAll());
+//        request.getRequestDispatcher("/buoi3/categorys.jsp").forward(request,response);
     }
 
-    private void viewUpdateDuLieu(HttpServletRequest request, HttpServletResponse response) {
+    private void viewUpdateDuLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // B1: Lay gia tri truyen tren duong dan => Lay gia tri jsp -> servlet
+        String id = request.getParameter("id");
+        // B2: lay doi tuong ra dua vao id
+        Category1 cate = categoryRepository.getOne(Long.valueOf(id));
+        // B3: Day doi tuong detail.jsp
+        request.setAttribute("cate1", cate);
+        // B4: Chuyen trang
+        request.getRequestDispatcher("/buoi3/update-cate.jsp").forward(request, response);
     }
 
-    private void viewAddDuLieu(HttpServletRequest request, HttpServletResponse response) {
+    private void viewAddDuLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/buoi3/add-category.jsp").forward(request, response);
     }
 
     private void searchDuLieu(HttpServletRequest request, HttpServletResponse response) {
     }
 
-    private void detailDuLieu(HttpServletRequest request, HttpServletResponse response) {
+    private void detailDuLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // B1: Lay gia tri truyen tren duong dan => Lay gia tri jsp -> servlet
+        String id = request.getParameter("id2");
+        // B2: lay doi tuong ra dua vao id
+        Category1 cate = categoryRepository.getOne(Long.valueOf(id));
+        // B3: Day doi tuong detail.jsp
+        request.setAttribute("cate1", cate);
+        // B4: Chuyen trang
+        request.getRequestDispatcher("/buoi3/detail-cate.jsp").forward(request, response);
     }
 
     private void hienThiDuLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // co list => repo.getAll
-        request.setAttribute("listCate",categoryRepository.getAll());
-        request.getRequestDispatcher("/buoi3/categorys.jsp").forward(request,response);
+        request.setAttribute("listCate", categoryRepository.getAll());
+        request.getRequestDispatcher("/buoi3/categorys.jsp").forward(request, response);
     }
 
     private void updateDuLieu(HttpServletRequest request, HttpServletResponse response) {
     }
 
+    @SneakyThrows
     private void addDuLieu(HttpServletRequest request, HttpServletResponse response) {
+        // B1: Lay du lieu tu o input
+        Category1 cate = new Category1();
+        // BeanUtil -> lay tat ca
+        // Tu dong mapping toan bo gia tri input: radio, checkbox...
+        // MAPPING NAME => NAME INPUT PHAI TRUNG NAME TRONG ENTITY
+        BeanUtils.populate(cate, request.getParameterMap());
+//        String name = request.getParameter("")
+        // B2: Goi chuc nang add
+        categoryRepository.add(cate);
+        // B3: Chuyen trang
+        response.sendRedirect("/category/hien-thi");
     }
 }
